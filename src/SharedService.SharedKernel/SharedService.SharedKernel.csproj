@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions"/>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>SharedService.SharedKernel</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>maxembo</Authors>
+    <Company>maxembo</Company>
+    <PackageDescription>SharedKernel</PackageDescription>
+    <RepositoryUrl>https://github.com/maxembo/SharedService</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>
