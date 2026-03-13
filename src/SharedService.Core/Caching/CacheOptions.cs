@@ -1,4 +1,4 @@
-﻿namespace DirectoryService.Application.Constants;
+﻿namespace SharedService.Core.Caching;
 
 public record CacheOptions
 {
