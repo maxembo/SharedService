@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>SharedService.Core</PackageId>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>maxembo</Authors>
     <Company>maxembo</Company>
     <PackageDescription>Core</PackageDescription>
@@ -13,6 +13,10 @@
     <PackageReference Include="Dapper"/>
     <PackageReference Include="FluentValidation"/>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
+    <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
     <PackageReference Include="Scrutor"/>
   </ItemGroup>
 
