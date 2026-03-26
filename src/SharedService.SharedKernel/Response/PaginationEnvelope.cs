@@ -8,12 +8,19 @@ public record PaginationEnvelope<T>
 
     public long TotalCount { get; init; }
 
-    [JsonConstructor]
-    private PaginationEnvelope() { }
+    public int Page { get; init; }
 
-    public PaginationEnvelope(IEnumerable<T> items, long totalCount)
+    public int PageSize { get; init; }
+
+    [JsonConstructor]
+    private PaginationEnvelope()
+    { }
+
+    public PaginationEnvelope(IEnumerable<T> items, long totalCount, int page, int pageSize)
     {
         Items = [..items];
         TotalCount = totalCount;
+        Page = page;
+        PageSize = pageSize;
     }
 }
