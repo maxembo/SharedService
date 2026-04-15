@@ -23,6 +23,23 @@ public static class CustomValidators
             });
     }
 
+    public static IRuleBuilderOptionsConditions<T, TElement> MustBeValueObject<T, TElement, TValueObject>(
+        this IRuleBuilder<T, TElement> ruleBuilder,
+        Func<TElement, Result<TValueObject, Errors>> factoryMethod)
+    {
+        return ruleBuilder.Custom(
+            (value, context) =>
+            {
+                Result<TValueObject, Errors> result = factoryMethod.Invoke(value);
+
+                if (result.IsSuccess)
+                    return;
+
+                foreach (var error in result.Error)
+                    context.AddFailure(JsonSerializer.Serialize(error));
+            });
+    }
+
     public static IRuleBuilderOptions<T, TProperty> WithError<T, TProperty>(
         this IRuleBuilderOptions<T, TProperty> rule, Error error)
     {

@@ -13,7 +13,7 @@ public static class ValidationExtensions
         var errors = from validationError in validationErrors
             let errorMessage = validationError.ErrorMessage
             let error = JsonSerializer.Deserialize<Error>(errorMessage)
-            select Error.Validation(error.Code, error.Message, validationError.PropertyName);
+            select Error.Validation(error.Code, error.Message, error.InvalidField ?? validationError.PropertyName);
 
         return errors.ToList();
     }

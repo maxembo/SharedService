@@ -2,34 +2,46 @@
 
 public static class GeneralErrors
 {
-    public static Error Invalid(string? name = null)
+    public static Error Invalid(string? fieldName = null)
     {
-        string label = name ?? "значение";
-        return Error.Validation("value.is.invalid", $"{label} содержит недопустимое значение", name);
+        string label = fieldName ?? "значение";
+        return Error.Validation("value.is.invalid", $"{label} содержит недопустимое значение", fieldName);
     }
 
-    public static Error NotFound(Guid? id = null, string? name = null)
+    public static Error NotFound(string entityName = "запись", Guid? id = null)
     {
-        string forId = id == null ? string.Empty : $"по id {id}";
-        return Error.NotFound("value.not.found", $"{name ?? "запись"} не найдена {forId}");
+        string message = id is null
+            ? $"{entityName} не найдена"
+            : $"{entityName} не найдена по id {id}";
+
+        return Error.NotFound("value.not.found", message);
     }
 
-    public static Error Required(string? name = null)
+    public static Error Required(string? fieldName)
     {
-        string label = name ?? string.Empty;
-        return Error.Validation("length.is.invalid", $"{label} обязателен", name);
+        return Error.Validation("value.is.required", $"{fieldName} обязателен", fieldName);
     }
 
-    public static Error LengthOutOfRange(string? name, int maxLength, int minLength = 0)
+    public static Error LengthOutOfRange(string fieldName, int minLength, int maxLength)
     {
+        if (string.IsNullOrWhiteSpace(fieldName))
+            throw new ArgumentException("Имя поля обязательно для заполнения", nameof(fieldName));
+
+        if (minLength < 0)
+            throw new ArgumentException("minLength должен быть больше или равно нуля", nameof(minLength));
+
+        if (maxLength <= minLength)
+            throw new ArgumentException("maxLength должен быть больше minLength");
+
         return Error.Validation(
-            "value.length.out.of.range", $"{name ?? string.Empty} должно быть от {minLength} до {maxLength} символов");
+            "value.length.out.of.range",
+            $"{fieldName} должно быть от {minLength} до {maxLength} символов",
+            fieldName);
     }
 
-    public static Error AlreadyExist(string? name = null)
+    public static Error AlreadyExist(string fieldName)
     {
-        string label = name ?? string.Empty;
-        return Error.Conflict("value.already.exist", $"{name} уже существует");
+        return Error.Conflict("value.already.exist", $"{fieldName} уже существует", fieldName);
     }
 
     public static Error Failure()
@@ -37,19 +49,18 @@ public static class GeneralErrors
         return Error.Failure("server.failure", "Серверная ошибка");
     }
 
-    public static Error MismatchRegex(string? name = null)
+    public static Error MismatchRegex(string fieldName)
     {
-        string label = name ?? string.Empty;
-        return Error.Validation("value.mismatch.regex", $"{label} имеет недопустимый формат", name);
+        return Error.Validation("value.mismatch.regex", $"{fieldName} имеет недопустимый формат", fieldName);
     }
 
-    public static Error Database(string? code, string? message = null)
+    public static Error Database(string code = "database.failure", string? message = null)
     {
         return Error.Failure(code, message ?? "Произошла ошибка в базе данных.");
     }
 
-    public static Error ArrayContainsDuplicates(string? code, string? message = null)
+    public static Error ArrayContainsDuplicates(string fieldName)
     {
-        return Error.Validation(code, message ?? "Массив содержит повторяющиеся значения.");
+        return Error.Validation("array.contains.duplicates", $"{fieldName} содержит повторяющиеся значения", fieldName);
     }
 }
