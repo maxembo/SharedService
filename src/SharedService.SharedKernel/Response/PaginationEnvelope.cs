@@ -12,15 +12,21 @@ public record PaginationEnvelope<T>
 
     public int PageSize { get; init; }
 
-    [JsonConstructor]
-    private PaginationEnvelope()
-    { }
+    public int TotalPages =>
+        PageSize == 0
+            ? 0
+            : (int)Math.Ceiling((double)TotalCount / PageSize);
 
-    public PaginationEnvelope(IEnumerable<T> items, long totalCount, int page, int pageSize)
+    [JsonConstructor]
+    public PaginationEnvelope(T[]? items, long totalCount, int page, int pageSize)
     {
-        Items = [..items];
+        Items = items ?? [];
         TotalCount = totalCount;
         Page = page;
         PageSize = pageSize;
     }
+
+    public PaginationEnvelope(IEnumerable<T>? items, long totalCount, int page, int pageSize)
+        : this(items?.ToArray() ?? [], totalCount, page, pageSize)
+    { }
 }
